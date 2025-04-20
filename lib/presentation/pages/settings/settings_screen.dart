@@ -20,6 +20,18 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context).colorScheme;
     final entriesColorsTheme = colorsTheme.entries.toList();
+    final selectedColorTheme = ref.watch(selectedColorThemeProvider);
+
+    /// Returns a string indicating whether the given color type is the currently
+    /// selected theme.
+    ///
+    /// If [colorType] matches the [selectedColorTheme], returns "✅".
+    /// Otherwise, returns an empty string.
+    String getColorCurrentTheme(EColorsType colorType) {
+      return colorType == selectedColorTheme
+          ? "✅"
+          : "";
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -51,7 +63,7 @@ class SettingsScreen extends ConsumerWidget {
                   final colorTheme = entryColorTheme.value;
 
                   return ListTile(
-                    title: Text(colorTheme.name),
+                    title: Text("${colorTheme.name} ${getColorCurrentTheme(type)}"),
                     leading: CircleAvatar(backgroundColor: colorTheme.color),
                     onTap:
                         () =>
