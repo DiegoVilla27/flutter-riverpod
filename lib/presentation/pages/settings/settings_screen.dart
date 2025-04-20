@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_app/core/theme/colors.dart';
-import 'package:flutter_riverpod_app/core/theme/providers/theme_color_provider.dart';
+import 'package:flutter_riverpod_app/core/theme/providers/theme_notifier_provider.dart';
 import 'package:flutter_riverpod_app/presentation/shared/widgets/drawer/drawer.dart';
 
 /// A screen that displays the settings of the application, allowing users to
@@ -18,9 +18,9 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context).colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
     final entriesColorsTheme = colorsTheme.entries.toList();
-    final selectedColorTheme = ref.watch(selectedColorThemeProvider);
+    final selectedColorTheme = ref.watch(themeNotifierProvider).selectedColor;
 
     /// Returns a string indicating whether the given color type is the currently
     /// selected theme.
@@ -28,16 +28,14 @@ class SettingsScreen extends ConsumerWidget {
     /// If [colorType] matches the [selectedColorTheme], returns "✅".
     /// Otherwise, returns an empty string.
     String getColorCurrentTheme(EColorsType colorType) {
-      return colorType == selectedColorTheme
-          ? "✅"
-          : "";
+      return colorType == selectedColorTheme ? "✅" : "";
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text("Settings"),
         centerTitle: true,
-        backgroundColor: theme.onPrimary,
+        backgroundColor: colorScheme.onPrimary,
       ),
       drawer: DrawerCustom(),
       body: SafeArea(
@@ -51,7 +49,7 @@ class SettingsScreen extends ConsumerWidget {
                   bottom: 8.0,
                   left: 16.0,
                 ),
-                child: Text("Pallete Colors", style: TextStyle(fontSize: 20.0)),
+                child: Text("Palette Colors", style: TextStyle(fontSize: 20.0)),
               ),
               Divider(),
               ListView.builder(
@@ -59,17 +57,19 @@ class SettingsScreen extends ConsumerWidget {
                 itemCount: colorsTheme.length,
                 itemBuilder: (BuildContext context, int index) {
                   final entryColorTheme = entriesColorsTheme[index];
-                  final type = entryColorTheme.key;
-                  final colorTheme = entryColorTheme.value;
+                  final key = entryColorTheme.key;
+                  final value = entryColorTheme.value;
 
                   return ListTile(
-                    title: Text("${colorTheme.name} ${getColorCurrentTheme(type)}"),
-                    leading: CircleAvatar(backgroundColor: colorTheme.color),
+                    title: Text("${value.name} ${getColorCurrentTheme(key)}"),
+                    leading: CircleAvatar(
+                      backgroundColor: value.color,
+                      radius: 10,
+                    ),
                     onTap:
-                        () =>
-                            ref
-                                .read(selectedColorThemeProvider.notifier)
-                                .state = type,
+                        () => ref
+                            .read(themeNotifierProvider.notifier)
+                            .changeColorPalette(key),
                   );
                 },
               ),
