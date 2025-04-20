@@ -20,15 +20,15 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final entriesColorsTheme = colorsTheme.entries.toList();
-    final selectedColorTheme = ref.watch(themeNotifierProvider).selectedColor;
+    final selectedColor = ref.watch(themeNotifierProvider).selectedColor;
 
     /// Returns a string indicating whether the given color type is the currently
     /// selected theme.
     ///
-    /// If [colorType] matches the [selectedColorTheme], returns "✅".
+    /// If [colorType] matches the [selectedColor], returns "✅".
     /// Otherwise, returns an empty string.
     String getColorCurrentTheme(EColorsType colorType) {
-      return colorType == selectedColorTheme ? "✅" : "";
+      return colorType == selectedColor ? "✅" : "";
     }
 
     return Scaffold(
