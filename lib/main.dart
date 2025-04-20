@@ -11,7 +11,7 @@ class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(_, WidgetRef ref) {
     final themeNotifier = ref.watch(themeNotifierProvider);
 
     return MaterialApp.router(

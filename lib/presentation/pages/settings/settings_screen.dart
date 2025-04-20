@@ -55,7 +55,7 @@ class SettingsScreen extends ConsumerWidget {
               ListView.builder(
                 shrinkWrap: true,
                 itemCount: colorsTheme.length,
-                itemBuilder: (BuildContext context, int index) {
+                itemBuilder: (_, int index) {
                   final entryColorTheme = entriesColorsTheme[index];
                   final key = entryColorTheme.key;
                   final value = entryColorTheme.value;

@@ -63,7 +63,7 @@ class DrawerCustom extends ConsumerWidget {
             ),
             title: Text("Dark Mode"),
             onChanged:
-                (value) =>
+                (_) =>
                     ref.read(themeNotifierProvider.notifier).toggleDarkMode(),
           ),
         ],
