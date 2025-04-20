@@ -1,16 +1,19 @@
-# flutter_riverpod_app
+# 🧪 Flutter Riverpod App
 
-A new Flutter project.
+This is a small Flutter project demonstrating state management using [Riverpod](https://riverpod.dev).  
+The app features dark mode switching, color palette selection, and basic navigation between screens.
 
-## Getting Started
+## 📱 Features
 
-This project is a starting point for a Flutter application.
+- ✅ **Riverpod** state management
+  - `StateProvider` for the counter screen
+  - `StateNotifierProvider` for managing theme and color palette
+- 🌓 **Dark mode toggle** from the drawer
+- 🎨 **Color palette selector** in the settings screen
+- 📂 **Drawer navigation** to three screens
 
-A few resources to get you started if this is your first Flutter project:
+## 🧭 Screens
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Home**: Empty placeholder screen
+- **Counter**: Shows a counter with increment button using `StateProvider`
+- **Settings**: Allows you to select a color palette using `StateNotifierProvider`
