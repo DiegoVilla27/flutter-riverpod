@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod_app/core/router/router_config.dart';
 import 'package:flutter_riverpod_app/core/theme/providers/theme_notifier_provider.dart';
-import 'package:flutter_riverpod_app/core/theme/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
@@ -18,11 +17,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Riverpod',
-      theme:
-          ThemeCustom(
-            selectedColor: themeNotifier.selectedColor,
-            isDarkMode: themeNotifier.isDarkMode,
-          ).get(),
+      theme: themeNotifier.get(),
       routerConfig: AppRouter.router,
     );
   }
