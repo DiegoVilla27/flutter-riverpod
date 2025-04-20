@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod_app/core/theme/colors.dart';
+import 'package:flutter_riverpod_app/core/theme/providers/theme_color_provider.dart';
 import 'package:flutter_riverpod_app/presentation/shared/widgets/drawer/drawer.dart';
 
-/// A stateless widget that represents the settings screen of the application.
+/// A screen that displays the settings of the application, allowing users to
+/// view and select different color themes.
 ///
-/// This screen includes an app bar with a centered title and a custom drawer.
-/// The body of the screen is wrapped in a SafeArea widget and contains a
-/// centered text widget. The app bar's background color is derived from the
-/// current theme's color scheme.
-class SettingsScreen extends StatelessWidget {
+/// This widget is a [ConsumerWidget] that uses Riverpod for state management.
+/// It builds a [Scaffold] with an [AppBar] and a custom [DrawerCustom].
+/// The body contains a list of available color themes, each represented by a
+/// [ListTile] with a [CircleAvatar] showing the color and a [Text] displaying
+/// the theme name. Tapping a list item updates the selected color theme using
+/// a Riverpod provider.
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context).colorScheme;
+    final entriesColorsTheme = colorsTheme.entries.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -21,7 +28,43 @@ class SettingsScreen extends StatelessWidget {
         backgroundColor: theme.onPrimary,
       ),
       drawer: DrawerCustom(),
-      body: SafeArea(child: Center(child: Text("Body"))),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 16.0,
+                  bottom: 8.0,
+                  left: 16.0,
+                ),
+                child: Text("Pallete Colors", style: TextStyle(fontSize: 20.0)),
+              ),
+              Divider(),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: colorsTheme.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final entryColorTheme = entriesColorsTheme[index];
+                  final type = entryColorTheme.key;
+                  final colorTheme = entryColorTheme.value;
+
+                  return ListTile(
+                    title: Text(colorTheme.name),
+                    leading: CircleAvatar(backgroundColor: colorTheme.color),
+                    onTap:
+                        () =>
+                            ref
+                                .read(selectedColorThemeProvider.notifier)
+                                .state = type,
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

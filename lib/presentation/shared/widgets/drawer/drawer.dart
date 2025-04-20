@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_app/core/router/router_names.dart';
+import 'package:flutter_riverpod_app/core/theme/providers/theme_darkmode_provider.dart';
 import 'package:flutter_riverpod_app/presentation/shared/widgets/drawer/utils/validate_route.dart';
 import 'package:flutter_riverpod_app/presentation/shared/widgets/drawer/widgets/drawer_header.dart';
 import 'package:go_router/go_router.dart';
 
-class DrawerCustom extends StatelessWidget {
+class DrawerCustom extends ConsumerWidget {
   const DrawerCustom({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bool isDarkMode = ref.watch(darkModeProvider);
     final currentRoute = GoRouter.of(context);
 
     /// Handles the tap event for a route by validating the transition
@@ -41,6 +44,16 @@ class DrawerCustom extends StatelessWidget {
             leading: const Icon(Icons.settings),
             title: const Text('Settings'),
             onTap: () => onTapRoute(AppRouterNames.settings),
+          ),
+          SwitchListTile(
+            value: isDarkMode,
+            controlAffinity: ListTileControlAffinity.leading,
+            thumbIcon: WidgetStateProperty.all(
+              Icon(isDarkMode ? Icons.dark_mode : Icons.light_mode),
+            ),
+            title: Text("Dark Mode"),
+            onChanged:
+                (value) => ref.read(darkModeProvider.notifier).state = value,
           ),
         ],
       ),
